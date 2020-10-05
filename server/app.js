@@ -8,6 +8,7 @@ import usersRouter from "./routes/users";
 import authenticationRoute from "./routes/authentication";
 import trainList from "./routes/trainLists";
 import passenger from "./routes/passengers";
+import profile from "./routes/profile"
 import configPassport from "./config/passport";
 import cors from "cors";
 
@@ -34,4 +35,5 @@ app.use("/users", usersRouter);
 app.use("/authentication", authenticationRoute);
 app.use("/trainlists", trainList);
 app.use("/pass", passenger);
+app.use('/profile', profile);
 export default app;

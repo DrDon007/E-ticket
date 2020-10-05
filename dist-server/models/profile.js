@@ -9,6 +9,14 @@ exports["default"] = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
+var historySchema = new _mongoose["default"].Schema({
+  trainNo: {
+    type: String
+  },
+  tranPNR: {
+    type: String
+  }
+});
 var ProfileSchema = new _mongoose["default"].Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -63,10 +71,16 @@ var ProfileSchema = new _mongoose["default"].Schema({
   coverPhoto: {
     type: String,
     required: false
-  }
+  },
+  history: [{
+    type: Schema.Types.ObjectId,
+    ref: 'History'
+  }]
 });
 
 var Profile = _mongoose["default"].model("Profile", ProfileSchema);
+
+var history = _mongoose["default"].model('History', historySchema);
 
 var _default = Profile;
 exports["default"] = _default;

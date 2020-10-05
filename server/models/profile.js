@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+const historySchema = new mongoose.Schema({
+  trainNo: { type: String},
+  tranPNR: { type: String},
+})
+
 const ProfileSchema = new mongoose.Schema({
   user: { type: Schema.Types.ObjectId, ref: "Person" },
   firstName: { type: String, required: true },
@@ -39,8 +44,10 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  history: [{ type: Schema.Types.ObjectId, ref: 'History' }]
 });
 
 const Profile = mongoose.model("Profile", ProfileSchema);
+const history = mongoose.model('History', historySchema);
 
 export default Profile;
