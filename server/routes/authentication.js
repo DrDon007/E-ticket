@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/user";
-import passport, { use } from "passport";
+import passport from "passport";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWTSecret } from "../config/jwtConfig";
@@ -20,13 +20,34 @@ router.post("/register", async (req, res, next) => {
   const { username, password, email } = req.body;
   try {
     const passwordHash = await bcrypt.hash(password, BCRYPT_SALTS_ROUNDS);
-    const user = new User({ username, passwordHash, email });
+    const user = new User({ username, passwordHash, email, role : "user" });
     await user.save();
     res.status(200).send({ status: true, message: "user created", user });
   } catch (err) {
     console.log("errr", err);
     res.status(400).send({ status: false, message: "user not created" });
   }
+});
+
+/* POST registers new user. */
+router.post("/register/admin", (req, res, next) => {
+  passport.authenticate('jwt', {session : false} , async (err, user, info) => {
+    const { username, password, email } = req.body;
+    try {
+      const {role} = info;
+      if(role !== "Admin") {
+        return res.status(403).send({ status: false, message: "Unauthorized access" });;
+      }
+      const passwordHash = await bcrypt.hash(password, BCRYPT_SALTS_ROUNDS);
+      const user = new User({ username, passwordHash, email, role : "admin" });
+      await user.save();
+      res.status(200).send({ status: true, message: "user created", user });
+    } catch (err) {
+      console.log("errr", err);
+      res.status(400).send({ status: false, message: "user not created" });
+    }
+  })(req,res,next);
+  
 });
 
 /* POST login new user. */

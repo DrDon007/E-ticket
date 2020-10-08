@@ -9,6 +9,7 @@ import authenticationRoute from "./routes/authentication";
 import trainList from "./routes/trainLists";
 import passenger from "./routes/passengers";
 import profile from "./routes/profile"
+import booking from './routes/booking';
 import configPassport from "./config/passport";
 import cors from "cors";
 
@@ -36,4 +37,5 @@ app.use("/authentication", authenticationRoute);
 app.use("/trainlists", trainList);
 app.use("/pass", passenger);
 app.use('/profile', profile);
+app.use('/booking',booking);
 export default app;

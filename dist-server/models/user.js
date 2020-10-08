@@ -1,15 +1,13 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _mongoose = _interopRequireDefault(require("mongoose"));
+var _mongoose = require("mongoose");
 
-var UserSchema = new _mongoose["default"].Schema({
+var UserSchema = new _mongoose.Schema({
   username: {
     type: "string",
     required: true
@@ -21,15 +19,16 @@ var UserSchema = new _mongoose["default"].Schema({
   passwordHash: {
     type: "string",
     required: true
+  },
+  role: {
+    type: "string",
+    required: true
+  },
+  profile: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Profile"
   }
 });
-UserSchema["static"]("findById", function (id) {
-  return this.find({
-    id: id
-  });
-});
-
-var User = _mongoose["default"].model("User", UserSchema);
-
+var User = (0, _mongoose.model)("User", UserSchema);
 var _default = User;
 exports["default"] = _default;

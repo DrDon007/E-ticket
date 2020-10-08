@@ -85,8 +85,9 @@ _passport["default"].use("jwt", new _passportJwt.Strategy(opts, function (jwt_pa
       console.log("user", user);
 
       if (user) {
-        return done(null, false, {
-          user: user
+        return done(null, true, {
+          user: user,
+          role: user.role
         });
       }
 

@@ -1,4 +1,5 @@
 import express, { response } from "express";
+import passport, { authenticate } from "passport";
 import trainList from "../models/trainList";
 
 var router = express.Router();
@@ -18,18 +19,31 @@ router.get("/", function (req, res, next) {
   });
 
   router.post("/trainlist", (req, res, next) => {
-    const list = new trainList(req.body);
-    list.save((err, data) => {
-      if (err) {
+    passport.authenticate('jwt', {session:false}, async (err,user,info) => {
+      try {
+        const {role} = info;
+        if(role !== "admin") {
+          return res.sendStatus(403).send({
+            success: false,
+            err: "unauthorized access",
+          });
+        }
+        const list = new trainList(req.body);
+        const savedList = list.save();
+        if(savedList) {
+          res.status(200).send({
+                success: true,
+                trainList: data,
+          });
+        }
+      }catch(err) {
         return res.sendStatus(400).send({
           success: false,
-          err: err,
+          err: err.message,
         });
       }
-      res.send({
-        success: true,
-        trainList: data,
-      });
-    });
+     
+    }) (req,res,next)
+    
   });
   export default router;

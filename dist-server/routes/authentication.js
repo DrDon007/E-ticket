@@ -1,7 +1,5 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -15,9 +13,9 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _express = _interopRequireDefault(require("express"));
 
-var _user = _interopRequireDefault(require("../models/user"));
+var _user2 = _interopRequireDefault(require("../models/user"));
 
-var _passport = _interopRequireWildcard(require("passport"));
+var _passport = _interopRequireDefault(require("passport"));
 
 var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
@@ -69,10 +67,11 @@ router.post("/register", /*#__PURE__*/function () {
 
           case 4:
             passwordHash = _context2.sent;
-            user = new _user["default"]({
+            user = new _user2["default"]({
               username: username,
               passwordHash: passwordHash,
-              email: email
+              email: email,
+              role: "user"
             });
             _context2.next = 8;
             return user.save();
@@ -107,44 +106,117 @@ router.post("/register", /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }());
+/* POST registers new user. */
+
+router.post("/register/admin", function (req, res, next) {
+  _passport["default"].authenticate('jwt', {
+    session: false
+  }, /*#__PURE__*/function () {
+    var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(err, user, info) {
+      var _req$body2, username, password, email, role, passwordHash, _user;
+
+      return _regenerator["default"].wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _req$body2 = req.body, username = _req$body2.username, password = _req$body2.password, email = _req$body2.email;
+              _context3.prev = 1;
+              role = info.role;
+
+              if (!(role !== "Admin")) {
+                _context3.next = 6;
+                break;
+              }
+
+              return _context3.abrupt("return", res.status(403).send({
+                status: false,
+                message: "Unauthorized access"
+              }));
+
+            case 6:
+              _context3.next = 8;
+              return _bcrypt["default"].hash(password, BCRYPT_SALTS_ROUNDS);
+
+            case 8:
+              passwordHash = _context3.sent;
+              _user = new _user2["default"]({
+                username: username,
+                passwordHash: passwordHash,
+                email: email,
+                role: "admin"
+              });
+              _context3.next = 12;
+              return _user.save();
+
+            case 12:
+              res.status(200).send({
+                status: true,
+                message: "user created",
+                user: _user
+              });
+              _context3.next = 19;
+              break;
+
+            case 15:
+              _context3.prev = 15;
+              _context3.t0 = _context3["catch"](1);
+              console.log("errr", _context3.t0);
+              res.status(400).send({
+                status: false,
+                message: "user not created"
+              });
+
+            case 19:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, null, [[1, 15]]);
+    }));
+
+    return function (_x7, _x8, _x9) {
+      return _ref3.apply(this, arguments);
+    };
+  }())(req, res, next);
+});
 /* POST login new user. */
 
 router.post("/login", /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
-    var _req$body2, username, password, user, comparePassword, jwt_token;
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
+    var _req$body3, username, password, user, comparePassword, jwt_token;
 
-    return _regenerator["default"].wrap(function _callee3$(_context3) {
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, username = _req$body2.username, password = _req$body2.password;
+            _req$body3 = req.body, username = _req$body3.username, password = _req$body3.password;
             console.log(username, password);
-            _context3.prev = 2;
-            _context3.next = 5;
-            return _user["default"].findOne({
+            _context4.prev = 2;
+            _context4.next = 5;
+            return _user2["default"].findOne({
               username: username
             }).exec();
 
           case 5:
-            user = _context3.sent;
+            user = _context4.sent;
             console.log(user);
 
             if (user) {
-              _context3.next = 9;
+              _context4.next = 9;
               break;
             }
 
-            return _context3.abrupt("return", res.status(400).send({
+            return _context4.abrupt("return", res.status(400).send({
               status: false,
               message: "user not found"
             }));
 
           case 9:
-            _context3.next = 11;
+            _context4.next = 11;
             return _bcrypt["default"].compare(password, user.passwordHash);
 
           case 11:
-            comparePassword = _context3.sent;
+            comparePassword = _context4.sent;
 
             if (!comparePassword) {
               res.status(200).send({
@@ -163,13 +235,13 @@ router.post("/login", /*#__PURE__*/function () {
                 jwt_token: jwt_token
               }
             });
-            _context3.next = 21;
+            _context4.next = 21;
             break;
 
           case 17:
-            _context3.prev = 17;
-            _context3.t0 = _context3["catch"](2);
-            console.log("errr", _context3.t0);
+            _context4.prev = 17;
+            _context4.t0 = _context4["catch"](2);
+            console.log("errr", _context4.t0);
             res.status(400).send({
               status: false,
               message: "user not created"
@@ -177,14 +249,14 @@ router.post("/login", /*#__PURE__*/function () {
 
           case 21:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, null, [[2, 17]]);
+    }, _callee4, null, [[2, 17]]);
   }));
 
-  return function (_x7, _x8, _x9) {
-    return _ref3.apply(this, arguments);
+  return function (_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
   };
 }());
 var _default = router;

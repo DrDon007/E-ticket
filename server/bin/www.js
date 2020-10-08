@@ -9,7 +9,7 @@ import debugLib from "debug";
 const debug = debugLib("your-project-name:server");
 import connectDb from "./dbConnection";
 var http = require("http");
-
+import {startupScript} from '../startupScript'
 /**
  * Get port from environment and store in Express.
  */
@@ -89,6 +89,7 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
+  startupScript();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }

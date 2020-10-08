@@ -29,6 +29,8 @@ var _passengers = _interopRequireDefault(require("./routes/passengers"));
 
 var _profile = _interopRequireDefault(require("./routes/profile"));
 
+var _booking = _interopRequireDefault(require("./routes/booking"));
+
 var _passport2 = _interopRequireDefault(require("./config/passport"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -55,5 +57,6 @@ app.use("/authentication", _authentication["default"]);
 app.use("/trainlists", _trainLists["default"]);
 app.use("/pass", _passengers["default"]);
 app.use('/profile', _profile["default"]);
+app.use('/booking', _booking["default"]);
 var _default = app;
 exports["default"] = _default;

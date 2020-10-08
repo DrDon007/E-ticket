@@ -81,8 +81,9 @@ passport.use(
       }).then((user) => {
         console.log("user", user);
         if (user) {
-          return done(null, false, {
+          return done(null, true, {
             user,
+            role : user.role
           });
         }
         done(null, false, {

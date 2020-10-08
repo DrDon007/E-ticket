@@ -1,14 +1,9 @@
-import mongoose from "mongoose";
+import {Schema, model} from "mongoose";
+import {bookingsSchema} from './booking';
 
-const historySchema = new mongoose.Schema({
-  trainNo: { type: String},
-  tranPNR: { type: String},
-})
-
-const ProfileSchema = new mongoose.Schema({
-  user: { type: Schema.Types.ObjectId, ref: "Person" },
+const ProfileSchema = new Schema({
   firstName: { type: String, required: true },
-  LastName: { type: String, required: true },
+  lastName: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
   PlaceOfBirth: {
     type: {
@@ -44,10 +39,13 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  history: [{ type: Schema.Types.ObjectId, ref: 'History' }]
+  bookings : [{
+    type : Schema.Types.ObjectId,
+    ref : 'Booking'
+  }]
 });
 
-const Profile = mongoose.model("Profile", ProfileSchema);
-const history = mongoose.model('History', historySchema);
+const Profile = model("Profile", ProfileSchema);
+
 
 export default Profile;

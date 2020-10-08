@@ -13,14 +13,15 @@ var _debug = _interopRequireDefault(require("debug"));
 
 var _dbConnection = _interopRequireDefault(require("./dbConnection"));
 
+var _startupScript = require("../startupScript");
+
 var debug = (0, _debug["default"])("your-project-name:server");
 
 var http = require("http");
+
 /**
  * Get port from environment and store in Express.
  */
-
-
 var port = normalizePort(process.env.PORT || "3600");
 
 _app["default"].set("port", port);
@@ -95,6 +96,7 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
+  (0, _startupScript.startupScript)();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
