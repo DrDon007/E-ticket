@@ -33,7 +33,7 @@ List["static"]("findById", function (id) {
   });
 });
 
-var trainList = _mongoose["default"].model("trainList", List);
+var TrainList = _mongoose["default"].model("TrainList", List);
 
-var _default = trainList;
+var _default = TrainList;
 exports["default"] = _default;

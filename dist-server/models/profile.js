@@ -11,46 +11,38 @@ var _booking = require("./booking");
 
 var ProfileSchema = new _mongoose.Schema({
   firstName: {
-    type: String,
-    required: true
+    type: String
   },
   lastName: {
-    type: String,
-    required: true
+    type: String
   },
   dateOfBirth: {
-    type: Date,
-    required: true
+    type: Date
   },
   PlaceOfBirth: {
     type: {
       type: String,
       // Don't do `{ location: { type: String } }`
-      "enum": ["Point"],
-      // 'location.type' must be 'Point'
-      required: true
+      "enum": ["Point"] // 'location.type' must be 'Point'
+
     },
     coordinates: {
-      type: [Number],
-      required: true
+      type: [Number]
     }
   },
   currentPlace: {
     type: {
       type: String,
       // Don't do `{ location: { type: String } }`
-      "enum": ["Point"],
-      // 'location.type' must be 'Point'
-      required: true
+      "enum": ["Point"] // 'location.type' must be 'Point'
+
     },
     coordinates: {
-      type: [Number],
-      required: true
+      type: [Number]
     }
   },
   relationshipStatus: {
-    type: String,
-    required: true
+    type: String
   },
   profilePhoto: {
     type: String,

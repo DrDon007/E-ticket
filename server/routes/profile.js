@@ -23,7 +23,7 @@ router.get("/users", (req, res, next) => {
   });
 });
 
-router.post("/createProfile", async (req, res, next) => {
+router.post("/updateProfile", async (req, res, next) => {
   passport.authenticate('jwt',  { session: false }, async (err, user, info) => {
     console.log('passport variables', err, user, info);
     if(!user) {
@@ -34,18 +34,11 @@ router.post("/createProfile", async (req, res, next) => {
       if(user.profile) {
        return res.status(200).send({"message" : "Profile already Exist"})
       }
-      const profile = new Profile({
-        user : user._id,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        dateOfBirth: req.body.dateOfBirth,
-        PlaceOfBirth: req.body.PlaceOfBirth,
-        currentPlace: req.body.currentPlace,
-        relationshipStatus: req.body.relationshipStatus,
-        profilePhoto: req.body.profilePhoto,
-        coverPhoto: req.body.coverPhoto,
-        bookings: []
-      });
+      const profile = await Profile.findById(user.profile._id).exec();
+      profile = {
+        ...profile,
+        ...req.body
+      }
       const success =  await profile.save();
       console.log('success', success);
       if(success) {

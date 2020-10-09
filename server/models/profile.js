@@ -2,34 +2,34 @@ import {Schema, model} from "mongoose";
 import {bookingsSchema} from './booking';
 
 const ProfileSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  firstName: { type: String },
+  lastName: { type: String},
+  dateOfBirth: { type: Date },
   PlaceOfBirth: {
     type: {
       type: String, // Don't do `{ location: { type: String } }`
       enum: ["Point"], // 'location.type' must be 'Point'
-      required: true,
+      
     },
     coordinates: {
       type: [Number],
-      required: true,
+      
     },
   },
   currentPlace: {
     type: {
       type: String, // Don't do `{ location: { type: String } }`
       enum: ["Point"], // 'location.type' must be 'Point'
-      required: true,
+      
     },
     coordinates: {
       type: [Number],
-      required: true,
+      
     },
   },
   relationshipStatus: {
     type: String,
-    required: true,
+    
   },
   profilePhoto: {
     type: String,

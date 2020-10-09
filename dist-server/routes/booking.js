@@ -92,7 +92,7 @@ router.post("/booking", function (req, res, next) {
             case 0:
               _context2.prev = 0;
               _user = info.user;
-              console.log('Profile', profile);
+              console.log("what i want is user", _user._id);
               trainPNR = "".concat(req.body.trainid).concat(Math.floor(Math.random() * Math.floor(10)));
               _context2.next = 6;
               return _profile["default"].findById(_user.profile._id).exec();

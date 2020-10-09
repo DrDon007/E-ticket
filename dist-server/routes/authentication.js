@@ -23,6 +23,8 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _jwtConfig = require("../config/jwtConfig");
 
+var _profile = _interopRequireDefault(require("../routes/profile"));
+
 var router = _express["default"].Router();
 
 var BCRYPT_SALTS_ROUNDS = 12;
@@ -54,18 +56,20 @@ router.get("/", /*#__PURE__*/function () {
 
 router.post("/register", /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res, next) {
-    var _req$body, username, password, email, passwordHash, user;
+    var _req$body, username, password, email, passwordHash, user, userCreated, newProfile;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _req$body = req.body, username = _req$body.username, password = _req$body.password, email = _req$body.email;
-            _context2.prev = 1;
-            _context2.next = 4;
+            console.log(username, password, email);
+            _context2.prev = 2;
+            console.log(req.body);
+            _context2.next = 6;
             return _bcrypt["default"].hash(password, BCRYPT_SALTS_ROUNDS);
 
-          case 4:
+          case 6:
             passwordHash = _context2.sent;
             user = new _user2["default"]({
               username: username,
@@ -73,33 +77,47 @@ router.post("/register", /*#__PURE__*/function () {
               email: email,
               role: "user"
             });
-            _context2.next = 8;
+            _context2.next = 10;
             return user.save();
 
-          case 8:
+          case 10:
+            userCreated = _context2.sent;
+
+            if (!userCreated) {
+              _context2.next = 15;
+              break;
+            }
+
+            newProfile = new _profile["default"]({
+              bookings: []
+            });
+            _context2.next = 15;
+            return newProfile.save();
+
+          case 15:
             res.status(200).send({
               status: true,
               message: "user created",
               user: user
             });
-            _context2.next = 15;
+            _context2.next = 22;
             break;
 
-          case 11:
-            _context2.prev = 11;
-            _context2.t0 = _context2["catch"](1);
+          case 18:
+            _context2.prev = 18;
+            _context2.t0 = _context2["catch"](2);
             console.log("errr", _context2.t0);
             res.status(400).send({
               status: false,
               message: "user not created"
             });
 
-          case 15:
+          case 22:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 11]]);
+    }, _callee2, null, [[2, 18]]);
   }));
 
   return function (_x4, _x5, _x6) {

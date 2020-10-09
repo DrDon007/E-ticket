@@ -10,6 +10,6 @@ List.static("findById", function (id) {
     return this.find({ id });
   });
 
-  const trainList = mongoose.model("trainList", List);
+  const TrainList = mongoose.model("TrainList", List);
 
-  export default trainList;
+  export default TrainList;

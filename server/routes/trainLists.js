@@ -1,7 +1,6 @@
 import express, { response } from "express";
 import passport, { authenticate } from "passport";
-import trainList from "../models/trainList";
-
+import TrainList from "../models/trainList";
 
 var router = express.Router();
 
@@ -11,7 +10,7 @@ router.get("/", function (req, res, next) {
   });
 
   router.get("/trainlists", (req, res, next) => {
-    trainList.findById(req.params.id).then((data) => {
+    TrainList.findById(req.params.id).then((data) => {
       res.json({
         success: true,
         trainLists: data,
@@ -30,7 +29,7 @@ router.get("/", function (req, res, next) {
             err: "unauthorized access",
           });
         }
-        const list = new trainList(req.body);
+        const list = new TrainList(req.body);
         console.log(list)
         const savedList = list.save();
         if(savedList) {
@@ -57,9 +56,9 @@ router.post("/trainlist/delete", (req, res, next) => {
   
   passport.authenticate("jwt", { session: false }, async (err, user, info) => {
     try {
-        const trainList = trainList.findById(req.trainList.id).exec();
-        trainList.status = false;
-        const trainListDel = await trainList.save();
+        const trainListdel = TrainList.findById(req.trainList.id).exec();
+        trainListdel.status = false;
+        const trainListDel = await trainListdel.save();
         if(trainListDel) {
                 res.status(200).send({message : "Train has been deleted"})   
         }
@@ -77,14 +76,27 @@ router.post("/trainlist/delete", (req, res, next) => {
 
 });
 
-router.get("/search/", (req, res, next) => {
+router.get("/search", async (req, res, next) => {
   console.log(req.body);
-  trainList.find({ 'start': req.body.from, 'end': req.body.to }).then((data) => {
-    res.json({
+  try {
+    const trains = await TrainList.find({ 'start': req.body.start, 'end': req.body.end }).exec();
+    console.log('trains', trains);
+    // then((err, data) => {
+      res.json({
+        success: true,
+        trainLists: trains,
+      });
+    // });
+
+  }catch(err) {
+    console.log('err', err);
+    res.status(404).json({
       success: true,
-      trainLists: data,
+      err: err.message
     });
-  });
+  }
+
+ 
 });
 
 

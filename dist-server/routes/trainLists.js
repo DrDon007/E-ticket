@@ -17,7 +17,7 @@ var _express = _interopRequireWildcard(require("express"));
 
 var _passport = _interopRequireWildcard(require("passport"));
 
-var _trainList2 = _interopRequireDefault(require("../models/trainList"));
+var _trainList = _interopRequireDefault(require("../models/trainList"));
 
 var router = _express["default"].Router();
 /* GET Train listing. */
@@ -27,7 +27,7 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 router.get("/trainlists", function (req, res, next) {
-  _trainList2["default"].findById(req.params.id).then(function (data) {
+  _trainList["default"].findById(req.params.id).then(function (data) {
     res.json({
       success: true,
       trainLists: data
@@ -60,7 +60,7 @@ router.post("/train/add", function (req, res, next) {
               }));
 
             case 4:
-              list = new _trainList2["default"](req.body);
+              list = new _trainList["default"](req.body);
               console.log(list);
               savedList = list.save();
 
@@ -103,17 +103,16 @@ router.post("/trainlist/delete", function (req, res, next) {
     session: false
   }, /*#__PURE__*/function () {
     var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(err, user, info) {
-      var _trainList, trainListDel;
-
+      var trainListdel, trainListDel;
       return _regenerator["default"].wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              _trainList = _trainList.findById(req.trainList.id).exec();
-              _trainList.status = false;
+              trainListdel = _trainList["default"].findById(req.trainList.id).exec();
+              trainListdel.status = false;
               _context2.next = 5;
-              return _trainList.save();
+              return trainListdel.save();
 
             case 5:
               trainListDel = _context2.sent;
@@ -146,18 +145,53 @@ router.post("/trainlist/delete", function (req, res, next) {
     };
   }())(req, res, next);
 });
-router.get("/search/", function (req, res, next) {
-  console.log(req.body);
+router.get("/search", /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+    var trains;
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            console.log(req.body);
+            _context3.prev = 1;
+            _context3.next = 4;
+            return _trainList["default"].find({
+              'start': req.body.start,
+              'end': req.body.end
+            }).exec();
 
-  _trainList2["default"].find({
-    'start': req.body.from,
-    'end': req.body.to
-  }).then(function (data) {
-    res.json({
-      success: true,
-      trainLists: data
-    });
-  });
-});
+          case 4:
+            trains = _context3.sent;
+            console.log('trains', trains); // then((err, data) => {
+
+            res.json({
+              success: true,
+              trainLists: trains
+            }); // });
+
+            _context3.next = 13;
+            break;
+
+          case 9:
+            _context3.prev = 9;
+            _context3.t0 = _context3["catch"](1);
+            console.log('err', _context3.t0);
+            res.status(404).json({
+              success: true,
+              err: _context3.t0.message
+            });
+
+          case 13:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 9]]);
+  }));
+
+  return function (_x7, _x8, _x9) {
+    return _ref3.apply(this, arguments);
+  };
+}());
 var _default = router;
 exports["default"] = _default;
