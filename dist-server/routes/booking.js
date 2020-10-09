@@ -92,13 +92,13 @@ router.post("/booking", function (req, res, next) {
             case 0:
               _context2.prev = 0;
               _user = info.user;
+              console.log('Profile', profile);
               trainPNR = "".concat(req.body.trainid).concat(Math.floor(Math.random() * Math.floor(10)));
-              _context2.next = 5;
+              _context2.next = 6;
               return _profile["default"].findById(_user.profile._id).exec();
 
-            case 5:
+            case 6:
               profile = _context2.sent;
-              console.log('Profile', profile);
               booking = new _booking.Booking({
                 trainNo: req.body.trainid,
                 seatNo: req.body.seatno,

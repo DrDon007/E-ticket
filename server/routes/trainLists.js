@@ -1,7 +1,7 @@
 import express, { response } from "express";
 import passport, { authenticate } from "passport";
 import trainList from "../models/trainList";
-import trainSearch from "../models/trainSearch";
+
 
 var router = express.Router();
 
@@ -31,11 +31,13 @@ router.get("/", function (req, res, next) {
           });
         }
         const list = new trainList(req.body);
+        console.log(list)
         const savedList = list.save();
         if(savedList) {
           res.status(200).send({
                 success: true,
                 message : "Train Added",
+                
           });
         }
       }catch(err) {
@@ -76,7 +78,8 @@ router.post("/trainlist/delete", (req, res, next) => {
 });
 
 router.get("/search/", (req, res, next) => {
-  trainList.find({ 'startTo': req.body.from, 'age': req.body.to }).then((data) => {
+  console.log(req.body);
+  trainList.find({ 'start': req.body.from, 'end': req.body.to }).then((data) => {
     res.json({
       success: true,
       trainLists: data,

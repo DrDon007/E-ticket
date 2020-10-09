@@ -19,8 +19,6 @@ var _passport = _interopRequireWildcard(require("passport"));
 
 var _trainList2 = _interopRequireDefault(require("../models/trainList"));
 
-var _trainSearch = _interopRequireDefault(require("../models/trainSearch"));
-
 var router = _express["default"].Router();
 /* GET Train listing. */
 
@@ -63,6 +61,7 @@ router.post("/train/add", function (req, res, next) {
 
             case 4:
               list = new _trainList2["default"](req.body);
+              console.log(list);
               savedList = list.save();
 
               if (savedList) {
@@ -72,11 +71,11 @@ router.post("/train/add", function (req, res, next) {
                 });
               }
 
-              _context.next = 13;
+              _context.next = 14;
               break;
 
-            case 9:
-              _context.prev = 9;
+            case 10:
+              _context.prev = 10;
               _context.t0 = _context["catch"](0);
               console.log('error', _context.t0);
               return _context.abrupt("return", res.status(400).send({
@@ -84,12 +83,12 @@ router.post("/train/add", function (req, res, next) {
                 err: _context.t0.message
               }));
 
-            case 13:
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 9]]);
+      }, _callee, null, [[0, 10]]);
     }));
 
     return function (_x, _x2, _x3) {
@@ -148,9 +147,11 @@ router.post("/trainlist/delete", function (req, res, next) {
   }())(req, res, next);
 });
 router.get("/search/", function (req, res, next) {
+  console.log(req.body);
+
   _trainList2["default"].find({
-    'startTo': req.body.from,
-    'age': req.body.to
+    'start': req.body.from,
+    'end': req.body.to
   }).then(function (data) {
     res.json({
       success: true,
