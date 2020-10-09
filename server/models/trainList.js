@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const List = new mongoose.Schema({
-    trainname: {type: 'string', required: true},
-    tranPNR: {type: 'string', required: true}
-    // from: {type: 'string', required: true},
-    // to: {type: 'string', required: true}
+    trainName: {type: 'string', required: true},
+    tranNo: {type: 'string', required: true},
+    start : {type: 'string', required: true},
+    end: {type: 'string', required: true}
 });
 List.static("findById", function (id) {
     return this.find({ id });

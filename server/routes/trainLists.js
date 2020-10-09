@@ -1,6 +1,7 @@
 import express, { response } from "express";
 import passport, { authenticate } from "passport";
 import trainList from "../models/trainList";
+import trainSearch from "../models/trainSearch";
 
 var router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/", function (req, res, next) {
     });
   });
 
-  router.post("/trainlist", (req, res, next) => {
+  router.post("/train/add", (req, res, next) => {
     passport.authenticate('jwt', {session:false}, async (err,user,info) => {
       try {
         const {role} = info;
@@ -37,6 +38,7 @@ router.get("/", function (req, res, next) {
           });
         }
       }catch(err) {
+        console.log('error', err);
         return res.sendStatus(400).send({
           success: false,
           err: err.message,
@@ -46,4 +48,40 @@ router.get("/", function (req, res, next) {
     }) (req,res,next)
     
   });
+
+/* delete train */
+router.post("/trainlist/delete", (req, res, next) => {
+  
+  passport.authenticate("jwt", { session: false }, async (err, user, info) => {
+    try {
+        const trainList = trainList.findById(req.trainList.id).exec();
+        trainList.status = false;
+        const trainListDel = await trainList.save();
+        if(trainListDel) {
+                res.status(200).send({message : "Train has been deleted"})   
+        }
+        
+        
+    }catch(err) {
+        console.log('err', err);
+        res.status(500).send(err.message);
+    }    
+})(
+    req,
+    res,
+    next
+  );
+
+});
+
+router.get("/search/", (req, res, next) => {
+  trainList.find({ 'startTo': req.body.from, 'age': req.body.to }).then((data) => {
+    res.json({
+      success: true,
+      trainLists: data,
+    });
+  });
+});
+
+
   export default router;

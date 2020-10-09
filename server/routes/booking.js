@@ -36,7 +36,6 @@ router.get("/bookings", function (req, res, next) {
 router.post("/booking", function (req, res, next) {
 
     passport.authenticate("jwt", { session: false }, async (err, user, info) => {
-        console.log(' I am here : Arko Chutiya', user );
         try {
             const {user} = info;
             const trainPNR  = `${req.body.trainid}${Math.floor(Math.random() * Math.floor(10))}`;

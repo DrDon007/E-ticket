@@ -90,14 +90,13 @@ router.post("/booking", function (req, res, next) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              console.log(' I am here : Arko Chutiya', user);
-              _context2.prev = 1;
+              _context2.prev = 0;
               _user = info.user;
               trainPNR = "".concat(req.body.trainid).concat(Math.floor(Math.random() * Math.floor(10)));
-              _context2.next = 6;
+              _context2.next = 5;
               return _profile["default"].findById(_user.profile._id).exec();
 
-            case 6:
+            case 5:
               profile = _context2.sent;
               console.log('Profile', profile);
               booking = new _booking.Booking({
@@ -106,10 +105,10 @@ router.post("/booking", function (req, res, next) {
                 status: true,
                 trainPNR: trainPNR
               });
-              _context2.next = 11;
+              _context2.next = 10;
               return booking.save();
 
-            case 11:
+            case 10:
               bookingDone = _context2.sent;
 
               if (bookingDone) {
@@ -123,21 +122,21 @@ router.post("/booking", function (req, res, next) {
                 }
               }
 
-              _context2.next = 19;
+              _context2.next = 18;
               break;
 
-            case 15:
-              _context2.prev = 15;
-              _context2.t0 = _context2["catch"](1);
+            case 14:
+              _context2.prev = 14;
+              _context2.t0 = _context2["catch"](0);
               console.log('err', _context2.t0);
               res.status(500).send(_context2.t0.message);
 
-            case 19:
+            case 18:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[1, 15]]);
+      }, _callee2, null, [[0, 14]]);
     }));
 
     return function (_x4, _x5, _x6) {

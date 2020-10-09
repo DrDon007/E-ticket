@@ -9,15 +9,7 @@ exports["default"] = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
-var List = new _mongoose["default"].Schema({
-  trainName: {
-    type: 'string',
-    required: true
-  },
-  tranNo: {
-    type: 'string',
-    required: true
-  },
+var Search = new _mongoose["default"].Schema({
   start: {
     type: 'string',
     required: true
@@ -27,13 +19,8 @@ var List = new _mongoose["default"].Schema({
     required: true
   }
 });
-List["static"]("findById", function (id) {
-  return this.find({
-    id: id
-  });
-});
 
-var trainList = _mongoose["default"].model("trainList", List);
+var trainSearch = _mongoose["default"].model("trainSearch", Search);
 
-var _default = trainList;
+var _default = trainSearch;
 exports["default"] = _default;
