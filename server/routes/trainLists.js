@@ -20,11 +20,12 @@ router.get("/", function (req, res, next) {
   });
 
   router.post("/train/add", (req, res, next) => {
+    console.log('req', req);
     passport.authenticate('jwt', {session:false}, async (err,user,info) => {
       try {
         const {role} = info;
-        if(role !== "admin") {
-          return res.sendStatus(403).send({
+        if(role.toLowerCase() !== ("admin")) {
+          return res.status(403).send({
             success: false,
             err: "unauthorized access",
           });
@@ -34,12 +35,12 @@ router.get("/", function (req, res, next) {
         if(savedList) {
           res.status(200).send({
                 success: true,
-                trainList: data,
+                message : "Train Added",
           });
         }
       }catch(err) {
         console.log('error', err);
-        return res.sendStatus(400).send({
+        return res.status(400).send({
           success: false,
           err: err.message,
         });

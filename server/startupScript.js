@@ -15,7 +15,7 @@ export const startupScript = async () => {
             username: "Admin",
             email: "admin@gmail.com",
             passwordHash: await bcrypt.hash('admin@123', BCRYPT_SALTS_ROUNDS),
-            role : "Admin",
+            role : "admin",
         });
         const userCreated = await adminUser.save();
         if(userCreated) {

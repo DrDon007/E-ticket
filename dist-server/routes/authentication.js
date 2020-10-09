@@ -123,7 +123,7 @@ router.post("/register/admin", function (req, res, next) {
               _context3.prev = 1;
               role = info.role;
 
-              if (!(role !== "Admin")) {
+              if (!(role !== "admin")) {
                 _context3.next = 6;
                 break;
               }

@@ -35,7 +35,7 @@ router.post("/register/admin", (req, res, next) => {
     const { username, password, email } = req.body;
     try {
       const {role} = info;
-      if(role !== "Admin") {
+      if(role !== "admin") {
         return res.status(403).send({ status: false, message: "Unauthorized access" });;
       }
       const passwordHash = await bcrypt.hash(password, BCRYPT_SALTS_ROUNDS);

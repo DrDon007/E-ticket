@@ -14,7 +14,7 @@ var List = new _mongoose["default"].Schema({
     type: 'string',
     required: true
   },
-  tranNo: {
+  trainNo: {
     type: 'string',
     required: true
   },

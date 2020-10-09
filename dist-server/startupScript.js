@@ -53,7 +53,7 @@ var startupScript = /*#__PURE__*/function () {
               username: "Admin",
               email: "admin@gmail.com",
               passwordHash: _context.t1,
-              role: "Admin"
+              role: "admin"
             };
             adminUser = new _context.t0(_context.t2);
             _context.next = 16;

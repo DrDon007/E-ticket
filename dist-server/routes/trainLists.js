@@ -37,6 +37,8 @@ router.get("/trainlists", function (req, res, next) {
   });
 });
 router.post("/train/add", function (req, res, next) {
+  console.log('req', req);
+
   _passport["default"].authenticate('jwt', {
     session: false
   }, /*#__PURE__*/function () {
@@ -49,12 +51,12 @@ router.post("/train/add", function (req, res, next) {
               _context.prev = 0;
               role = info.role;
 
-              if (!(role !== "admin")) {
+              if (!(role.toLowerCase() !== "admin")) {
                 _context.next = 4;
                 break;
               }
 
-              return _context.abrupt("return", res.sendStatus(403).send({
+              return _context.abrupt("return", res.status(403).send({
                 success: false,
                 err: "unauthorized access"
               }));
@@ -66,7 +68,7 @@ router.post("/train/add", function (req, res, next) {
               if (savedList) {
                 res.status(200).send({
                   success: true,
-                  trainList: data
+                  message: "Train Added"
                 });
               }
 
@@ -77,7 +79,7 @@ router.post("/train/add", function (req, res, next) {
               _context.prev = 9;
               _context.t0 = _context["catch"](0);
               console.log('error', _context.t0);
-              return _context.abrupt("return", res.sendStatus(400).send({
+              return _context.abrupt("return", res.status(400).send({
                 success: false,
                 err: _context.t0.message
               }));
